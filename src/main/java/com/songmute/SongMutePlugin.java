@@ -22,7 +22,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.PostClientTick;
 import net.runelite.api.events.VolumeChanged;
-import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
@@ -42,6 +41,11 @@ import net.runelite.client.util.ImageUtil;
 )
 public class SongMutePlugin extends Plugin
 {
+	// The generated ComponentID names for the music interface do not map cleanly to the
+	// old WidgetInfo.MUSIC_TRACK_LIST packed ID, so use the exact music list child ID.
+	private static final int MUSIC_TRACK_LIST_CHILD = 11;
+	private static final int MUSIC_TRACK_LIST_ID = InterfaceID.MUSIC << 16 | MUSIC_TRACK_LIST_CHILD;
+
 	@Inject
 	private Client client;
 
@@ -454,7 +458,7 @@ public class SongMutePlugin extends Plugin
 			return;
 		}
 
-		Widget trackList = client.getWidget(ComponentID.MUSIC_LIST);
+		Widget trackList = client.getWidget(MUSIC_TRACK_LIST_ID);
 		if (trackList == null)
 		{
 			return;
@@ -490,7 +494,7 @@ public class SongMutePlugin extends Plugin
 			}
 		}
 
-		Widget trackList = client.getWidget(ComponentID.MUSIC_LIST);
+		Widget trackList = client.getWidget(MUSIC_TRACK_LIST_ID);
 		if (trackList == null)
 		{
 			return;
@@ -579,7 +583,7 @@ public class SongMutePlugin extends Plugin
 		Widget current = widget;
 		while (current != null)
 		{
-			if (current.getId() == ComponentID.MUSIC_LIST)
+			if (current.getId() == MUSIC_TRACK_LIST_ID)
 			{
 				return true;
 			}
